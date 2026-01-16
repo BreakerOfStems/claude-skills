@@ -4,65 +4,35 @@
 
 set -e
 
-WORKERS_FILE="config/workers.json"
-
 usage() {
-    echo "Usage: $0 <worker-name> <powershell-command>"
+    echo "Usage: $0 <port> <user> <powershell-command>"
     echo ""
     echo "Executes a PowerShell command on a Windows worker via SSH tunnel."
     echo ""
-    echo "The worker must be defined in $WORKERS_FILE"
+    echo "Arguments:"
+    echo "  port    - The localhost port for the SSH tunnel"
+    echo "  user    - The SSH username"
+    echo "  command - The PowerShell command to execute"
     echo ""
     echo "Examples:"
-    echo "  $0 worker1 'Get-Service'"
-    echo "  $0 worker1 'Get-ChildItem C:\\Apps'"
-    echo "  $0 worker1 'Restart-Service MyApp'"
+    echo "  $0 2222 admin 'Get-Service'"
+    echo "  $0 2222 admin 'Get-ChildItem C:\\Apps'"
+    echo "  $0 2223 admin 'Restart-Service MyApp'"
     exit 1
 }
 
-if [ $# -lt 2 ]; then
+if [ $# -lt 3 ]; then
     usage
 fi
 
-WORKER_NAME="$1"
-shift
+TUNNEL_PORT="$1"
+SSH_USER="$2"
+shift 2
 PS_COMMAND="$*"
 
-# Check if workers file exists
-if [ ! -f "$WORKERS_FILE" ]; then
-    echo "ERROR: Workers registry not found at $WORKERS_FILE"
-    exit 1
-fi
-
-# Check for jq
-if ! command -v jq &> /dev/null; then
-    echo "ERROR: jq is required but not installed"
-    exit 1
-fi
-
-# Look up worker in registry
-WORKER=$(jq -r --arg name "$WORKER_NAME" '.workers[] | select(.name == $name)' "$WORKERS_FILE")
-
-if [ -z "$WORKER" ] || [ "$WORKER" = "null" ]; then
-    echo "ERROR: Worker '$WORKER_NAME' not found in registry"
-    echo ""
-    echo "Available workers:"
-    jq -r '.workers[].name' "$WORKERS_FILE" 2>/dev/null || echo "  (none)"
-    exit 1
-fi
-
-# Extract connection details
-TUNNEL_PORT=$(echo "$WORKER" | jq -r '.tunnel_port')
-SSH_USER=$(echo "$WORKER" | jq -r '.ssh_user')
-NOTES=$(echo "$WORKER" | jq -r '.notes // "No notes"')
-
-if [ -z "$TUNNEL_PORT" ] || [ "$TUNNEL_PORT" = "null" ]; then
-    echo "ERROR: No tunnel_port defined for worker '$WORKER_NAME'"
-    exit 1
-fi
-
-if [ -z "$SSH_USER" ] || [ "$SSH_USER" = "null" ]; then
-    echo "ERROR: No ssh_user defined for worker '$WORKER_NAME'"
+# Validate port is numeric
+if ! [[ "$TUNNEL_PORT" =~ ^[0-9]+$ ]]; then
+    echo "ERROR: Port must be a number"
     exit 1
 fi
 
@@ -90,10 +60,8 @@ for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
 done
 
 echo "========================================"
-echo "Worker: $WORKER_NAME"
 echo "Port: $TUNNEL_PORT"
 echo "User: $SSH_USER"
-echo "Notes: $NOTES"
 echo "========================================"
 echo "Command: $PS_COMMAND"
 echo "========================================"

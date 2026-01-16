@@ -9,7 +9,7 @@ Skills provide Claude with domain-specific knowledge, command allowlists, and sa
 Clone this repository into your Claude Code skills directory:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/claude-skills.git ~/.claude/skills
+git clone https://github.com/BreakerOfStems/claude-skills.git ~/.claude/skills
 ```
 
 Claude Code will automatically discover skills by reading `SKILL.md` files with YAML frontmatter.
@@ -18,15 +18,14 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 
 | Skill | Description |
 |-------|-------------|
-| [github](skills/github/SKILL.md) | GitHub and git workflows for cloning repos, managing issues, creating branches, resolving conflicts, and creating PRs |
-| [azure](skills/azure/SKILL.md) | Azure CLI read-only operations for searching resources, querying configurations, and inspecting RBAC |
-| [linux-admin](skills/linux-admin/SKILL.md) | Bounded Linux administration for filesystem and systemd service management |
-| [windows-remote](skills/windows-remote/SKILL.md) | Windows remote administration via PowerShell over SSH tunnel |
+| [github](github/SKILL.md) | GitHub and git workflows for cloning repos, managing issues, creating branches, resolving conflicts, and creating PRs |
+| [azure](azure/SKILL.md) | Azure CLI read-only operations for searching resources, querying configurations, and inspecting RBAC |
+| [linux-admin](linux-admin/SKILL.md) | Bounded Linux administration for filesystem and systemd service management |
+| [windows-remote](windows-remote/SKILL.md) | Windows remote administration via PowerShell over SSH tunnel |
 
 ## Structure
 
 ```
-skills/
 ├── github/
 │   ├── SKILL.md                 # Skill definition
 │   ├── templates/               # PR templates, etc.
@@ -40,17 +39,15 @@ skills/
 ├── windows-remote/
 │   ├── SKILL.md
 │   └── scripts/
-└── shared/
-    ├── CONVENTIONS.md           # Shared conventions for all skills
-    └── SAFETY.md                # Safety guidelines
-
-config/
-└── workers.json                 # Windows workers registry
+├── shared/
+│   ├── CONVENTIONS.md           # Shared conventions for all skills
+│   └── SAFETY.md                # Safety guidelines
+└── README.md
 ```
 
 ## Shared Conventions
 
-All skills follow the conventions defined in [shared/CONVENTIONS.md](skills/shared/CONVENTIONS.md):
+All skills follow the conventions defined in [shared/CONVENTIONS.md](shared/CONVENTIONS.md):
 
 - Work only inside designated workspace directories
 - Prefer non-interactive commands and JSON outputs
@@ -90,12 +87,6 @@ A well-structured skill includes:
 - Reference shared conventions rather than duplicating them
 - Provide concrete examples for common workflows
 - Use helper scripts to enforce policies programmatically
-
-## Configuration
-
-Some skills use configuration files in the `config/` directory:
-
-- **workers.json** - Registry of Windows workers for the `windows-remote` skill
 
 ## Learn More
 

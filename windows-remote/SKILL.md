@@ -23,16 +23,6 @@ This skill provides Windows remote administration capabilities via PowerShell co
 
 Windows workers establish reverse SSH tunnels to the VPS, exposing their SSH/PowerShell endpoint on a specific localhost port.
 
-## Workers Registry
-
-Before executing commands, **always read** the workers registry:
-
-```
-config/workers.json
-```
-
-This file maps worker names to tunnel ports and SSH users.
-
 ## Command Format
 
 ```bash
@@ -74,9 +64,9 @@ Get-WinEvent -LogName <log> -MaxEvents <n>
 
 ### Tunnel Verification
 
-- **Only use ports and hostnames from `config/workers.json`**
+- Only use known tunnel ports and hostnames
 - Never connect to arbitrary ports or hosts
-- Verify worker exists in registry before connecting
+- Verify worker configuration before connecting
 
 ### Forbidden Operations
 
@@ -103,51 +93,48 @@ System reboots require:
 ### Connect to a Worker
 
 ```bash
-# 1. Read workers registry
-cat config/workers.json
-
-# 2. Connect and list files
+# Connect and list files
 ssh -p 2222 admin@localhost powershell -Command "Get-ChildItem C:\Apps"
 ```
 
 ### Check Service Status
 
 ```bash
-# Using the helper script
-./scripts/win_ps.sh worker1 "Get-Service MyAppService"
+# Using the helper script: ./scripts/win_ps.sh <port> <user> <command>
+./scripts/win_ps.sh 2222 admin "Get-Service MyAppService"
 ```
 
 ### Restart a Windows Service
 
 ```bash
 # 1. Check current status
-./scripts/win_ps.sh worker1 "Get-Service MyAppService"
+./scripts/win_ps.sh 2222 admin "Get-Service MyAppService"
 
 # 2. View recent events
-./scripts/win_ps.sh worker1 "Get-EventLog -LogName Application -Newest 20 | Where-Object {$_.Source -eq 'MyAppService'}"
+./scripts/win_ps.sh 2222 admin "Get-EventLog -LogName Application -Newest 20"
 
 # 3. Restart service
-./scripts/win_ps.sh worker1 "Restart-Service MyAppService"
+./scripts/win_ps.sh 2222 admin "Restart-Service MyAppService"
 
 # 4. Verify restart
-./scripts/win_ps.sh worker1 "Get-Service MyAppService"
+./scripts/win_ps.sh 2222 admin "Get-Service MyAppService"
 ```
 
 ### List All Services
 
 ```bash
-./scripts/win_ps.sh worker1 "Get-Service | Format-Table -AutoSize"
+./scripts/win_ps.sh 2222 admin "Get-Service | Format-Table -AutoSize"
 ```
 
 ### Copy Files
 
 ```bash
-./scripts/win_ps.sh worker1 "Copy-Item 'C:\Apps\config.bak' 'C:\Apps\config.json'"
+./scripts/win_ps.sh 2222 admin "Copy-Item 'C:\Apps\config.bak' 'C:\Apps\config.json'"
 ```
 
 ## Helper Scripts
 
-- `scripts/win_ps.sh` - Execute PowerShell commands on a worker by name
+- `scripts/win_ps.sh` - Execute PowerShell commands via SSH tunnel
 
 ## Error Handling
 
@@ -156,6 +143,6 @@ Common issues and solutions:
 | Error | Cause | Solution |
 |-------|-------|----------|
 | Connection refused | Tunnel not active | Check if worker tunnel is up |
-| Permission denied | Auth failure | Verify SSH user in workers.json |
+| Permission denied | Auth failure | Verify SSH user configuration |
 | Service not found | Wrong service name | Use `Get-Service` to list services |
 | Access denied | Insufficient privileges | May need admin account |
