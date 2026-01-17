@@ -56,6 +56,12 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 | [unity-ui](unity-ui/SKILL.md) | Make UI changes by editing prefabs and scenes carefully |
 | [unity-project-hygiene](unity-project-hygiene/SKILL.md) | Keep Unity repos stable for CI/CD |
 
+### Meta
+
+| Skill | Description |
+|-------|-------------|
+| [skill-authoring](skill-authoring/SKILL.md) | Create new Claude Code skills with proper structure and best practices |
+
 ## Structure
 
 ```
@@ -75,6 +81,7 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 ├── unity-debugging/
 ├── unity-ui/
 ├── unity-project-hygiene/
+├── skill-authoring/
 ├── shared/
 │   ├── CONVENTIONS.md
 │   └── SAFETY.md
