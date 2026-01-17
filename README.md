@@ -56,6 +56,12 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 | [unity-ui](unity-ui/SKILL.md) | Make UI changes by editing prefabs and scenes carefully |
 | [unity-project-hygiene](unity-project-hygiene/SKILL.md) | Keep Unity repos stable for CI/CD |
 
+### Automation
+
+| Skill | Description |
+|-------|-------------|
+| [task-plan-normalizer](task-plan-normalizer/SKILL.md) | Convert raw task input into machine-safe execution plans for unattended operation |
+
 ### Meta
 
 | Skill | Description |
@@ -81,6 +87,7 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 ├── unity-debugging/
 ├── unity-ui/
 ├── unity-project-hygiene/
+├── task-plan-normalizer/
 ├── skill-authoring/
 ├── shared/
 │   ├── CONVENTIONS.md
