@@ -6,15 +6,11 @@ Skills provide Claude with domain-specific knowledge, command allowlists, and sa
 
 ## Installation
 
-Install or update the skills by running:
+Clone this repository into your Claude Code skills directory:
 
 ```bash
-[ -d ~/.claude/skills/.git ] && git -C ~/.claude/skills pull || (rm -rf ~/.claude/skills && git clone https://github.com/BreakerOfStems/claude-skills.git ~/.claude/skills)
+git clone https://github.com/BreakerOfStems/claude-skills.git ~/.claude/skills
 ```
-
-This command:
-- **Updates** existing installations by pulling the latest changes
-- **Installs** fresh if the skills directory doesn't exist or isn't a git repository
 
 Claude Code will automatically discover skills by reading `SKILL.md` files with YAML frontmatter.
 
