@@ -16,32 +16,68 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 
 ## Available Skills
 
+### GitHub
+
 | Skill | Description |
 |-------|-------------|
-| [github](github/SKILL.md) | GitHub and git workflows for cloning repos, managing issues, creating branches, resolving conflicts, and creating PRs |
-| [azure](azure/SKILL.md) | Azure CLI read-only operations for searching resources, querying configurations, and inspecting RBAC |
-| [linux-admin](linux-admin/SKILL.md) | Bounded Linux administration for filesystem and systemd service management |
+| [github-clone](github-clone/SKILL.md) | Clone repositories and set up local workspace |
+| [github-issues](github-issues/SKILL.md) | View and understand GitHub issues |
+| [github-branches](github-branches/SKILL.md) | Create and manage feature branches |
+| [github-pr](github-pr/SKILL.md) | Create and manage pull requests |
+| [github-conflicts](github-conflicts/SKILL.md) | Resolve merge conflicts safely |
+
+### Azure (Read-Only)
+
+| Skill | Description |
+|-------|-------------|
+| [azure-resources](azure-resources/SKILL.md) | Query Azure resources and configurations |
+| [azure-rbac](azure-rbac/SKILL.md) | Query Azure RBAC role assignments and definitions |
+
+### Linux
+
+| Skill | Description |
+|-------|-------------|
+| [linux-filesystem](linux-filesystem/SKILL.md) | Filesystem operations within workspace boundaries |
+| [linux-services](linux-services/SKILL.md) | Systemd service management and log access |
+
+### Windows Remote
+
+| Skill | Description |
+|-------|-------------|
 | [windows-remote](windows-remote/SKILL.md) | Windows remote administration via PowerShell over SSH tunnel |
+
+### Unity
+
+| Skill | Description |
+|-------|-------------|
+| [unity-headless](unity-headless/SKILL.md) | Install Unity Hub/Editor, activate licenses, run headless builds and tests |
+| [unity-coding](unity-coding/SKILL.md) | Implement gameplay and system code following Unity conventions |
+| [unity-debugging](unity-debugging/SKILL.md) | Diagnose compile errors and runtime issues using logs |
+| [unity-ui](unity-ui/SKILL.md) | Make UI changes by editing prefabs and scenes carefully |
+| [unity-project-hygiene](unity-project-hygiene/SKILL.md) | Keep Unity repos stable for CI/CD |
 
 ## Structure
 
 ```
-├── github/
-│   ├── SKILL.md                 # Skill definition
-│   ├── templates/               # PR templates, etc.
-│   └── scripts/                 # Helper scripts
-├── azure/
-│   ├── SKILL.md
-│   └── scripts/
-├── linux-admin/
-│   ├── SKILL.md
-│   └── scripts/
+├── github-clone/
+├── github-issues/
+├── github-branches/
+├── github-pr/
+├── github-conflicts/
+├── azure-resources/
+├── azure-rbac/
+├── linux-filesystem/
+├── linux-services/
 ├── windows-remote/
-│   ├── SKILL.md
+├── unity-headless/
 │   └── scripts/
+├── unity-coding/
+├── unity-debugging/
+├── unity-ui/
+├── unity-project-hygiene/
 ├── shared/
-│   ├── CONVENTIONS.md           # Shared conventions for all skills
-│   └── SAFETY.md                # Safety guidelines
+│   ├── CONVENTIONS.md
+│   └── SAFETY.md
 └── README.md
 ```
 
@@ -49,11 +85,11 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 
 All skills follow the conventions defined in [shared/CONVENTIONS.md](shared/CONVENTIONS.md):
 
-- Work only inside designated workspace directories
-- Prefer non-interactive commands and JSON outputs
-- Never modify protected system resources unless explicitly asked
-- Show current state before destructive actions
-- Stop and summarize on merge conflicts before proceeding
+- Work only inside `~/workspace/` or designated project directories
+- Never modify protected resources (SSH, sudoers, tailscale, ufw, users/groups)
+- Always run `git status` before and after changes
+- Prefer minimal diffs, one concern per commit
+- Format output as: commands + short results + next step
 
 ## Creating Your Own Skills
 
@@ -70,23 +106,21 @@ description: Brief description of what this skill does
 Detailed instructions, command allowlists, and policies...
 ```
 
+### Skill Design Principles
+
+1. **One function per skill** - Keep skills focused and granular
+2. **No overlap** - Each skill has a distinct purpose
+3. **Clear boundaries** - Explicit about what's allowed and forbidden
+4. **Shared conventions** - Reference common protections, don't duplicate
+
 ### Skill Anatomy
 
 A well-structured skill includes:
 
-1. **Scope** - What the skill covers
-2. **Command Allowlist** - Explicitly permitted commands
-3. **Policies** - Safety rules and operational constraints
-4. **Workflow Examples** - Common usage patterns
-5. **Helper Scripts** - Automation for complex operations
-
-### Best Practices
-
-- Be explicit about what's allowed and forbidden
-- Include safety checks and confirmation requirements for destructive operations
-- Reference shared conventions rather than duplicating them
-- Provide concrete examples for common workflows
-- Use helper scripts to enforce policies programmatically
+1. **Purpose** - What the skill does (one sentence)
+2. **Commands** - Allowed commands with examples
+3. **Workflow** - Step-by-step usage patterns
+4. **Policies** - Safety rules and constraints
 
 ## Learn More
 
