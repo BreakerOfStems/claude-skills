@@ -56,6 +56,15 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 | [unity-ui](unity-ui/SKILL.md) | Make UI changes by editing prefabs and scenes carefully |
 | [unity-project-hygiene](unity-project-hygiene/SKILL.md) | Keep Unity repos stable for CI/CD |
 
+### Obsidian
+
+| Skill | Description |
+|-------|-------------|
+| [obsidian-read-context](obsidian-read-context/SKILL.md) | Analyze vault documentation to understand knowledge state and identify gaps |
+| [obsidian-extract-inbox](obsidian-extract-inbox/SKILL.md) | Extract structured document proposals from messy inbox notes |
+| [obsidian-write-document](obsidian-write-document/SKILL.md) | Create or update canonical Obsidian documents with proper formatting |
+| [obsidian-issue-from-doc](obsidian-issue-from-doc/SKILL.md) | Convert Obsidian documents into GitHub-ready issues |
+
 ### Automation
 
 | Skill | Description |
@@ -87,6 +96,10 @@ Claude Code will automatically discover skills by reading `SKILL.md` files with 
 ├── unity-debugging/
 ├── unity-ui/
 ├── unity-project-hygiene/
+├── obsidian-read-context/
+├── obsidian-extract-inbox/
+├── obsidian-write-document/
+├── obsidian-issue-from-doc/
 ├── task-plan-normalizer/
 ├── skill-authoring/
 ├── shared/
